@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nobile Tech - Aprende Algoritmos y PSeInt</title>
+    <!-- Favicon de Nobile Tech (.ico) -->
+    <link rel="shortcut icon" href="Logo.ico" type="image/x-icon">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS Styles -->
+    <style>
+        .high-contrast {
+            background-color: #000000 !important;
+            color: #ffff00 !important;
+        }
+        .high-contrast header, .high-contrast footer, .high-contrast div, .high-contrast section, .high-contrast nav {
+            background-color: #0d0d0d !important;
+            color: #ffffff !important;
+            border-color: #ffff00 !important;
+        }
+        .high-contrast button, .high-contrast a {
+            background-color: #ffff00 !important;
+            color: #000000 !important;
+            font-weight: bold !important;
+        }
+        .code-font {
+            font-family: 'Courier New', Courier, monospace;
+        }
+        @keyframes pulse-audio {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+        .audio-speaking {
+            color: #10b981 !important;
+            animation: pulse-audio 1.2s infinite ease-in-out;
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printable-ticket, #printable-ticket * {
+                visibility: visible;
+            }
+            #printable-ticket {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col transition-all duration-300" id="body-content">
+
+    <!-- ENCABEZADO (HEADER) -->
+    <header class="bg-slate-800 border-b border-slate-700 sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo y Nombre de Empresa (Nobile Tech) -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="navigateTo('inicio')">
+                    <img src="Logo.png" alt="Nobile Tech Logo" class="h-10 w-auto object-contain" onerror="this.src='https://via.placeholder.com/40x40/6366f1/ffffff?text=NT'">
+                    <div>
+                        <span class="text-xl font-extrabold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Nobile Tech</span>
+                        <span class="block text-xs text-slate-400 font-medium">PSeInt & Algoritmos</span>
+                    </div>
+                </div>
+
+                <!-- Menú de Navegación Principal -->
+                <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                    <button onclick="navigateTo('inicio')" class="nav-link text-indigo-400 hover:text-indigo-300 transition" data-key="nav_home"><i class="fa-solid fa-house mr-1"></i> Inicio</button>
+                    <button onclick="navigateTo('nosotros')" class="nav-link text-slate-300 hover:text-indigo-400 transition" data-key="nav_about"><i class="fa-solid fa-users mr-1"></i> Nosotros</button>
+                    <button onclick="navigateTo('servicios')" class="nav-link text-slate-300 hover:text-indigo-400 transition" data-key="nav_services"><i class="fa-solid fa-cubes mr-1"></i> Servicios</button>
+                    <button onclick="navigateTo('tecnico')" class="nav-link text-slate-300 hover:text-indigo-400 transition" data-key="nav_tech"><i class="fa-solid fa-brain mr-1"></i> Tema Técnico</button>
+                    <button onclick="navigateTo('registro')" class="nav-link text-slate-300 hover:text-indigo-400 transition" data-key="nav_account"><i class="fa-solid fa-user-check mr-1"></i> Cuenta y Pago</button>
+                </nav>
+
+                <!-- Barra de Búsqueda -->
+                <div class="hidden lg:flex items-center bg-slate-900 rounded-full px-3 py-1.5 border border-slate-700 focus-within:border-indigo-500 transition">
+                    <i class="fa-solid fa-magnifying-glass text-slate-400 mr-2 text-xs"></i>
+                    <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Buscar en el sitio..." class="bg-transparent text-sm text-slate-200 focus:outline-none w-36 focus:w-48 transition-all">
+                </div>
+
+                <!-- Controles de Accesibilidad e Idioma -->
+                <div class="flex items-center space-x-2">
+                    <!-- Audio Reader Mejorado -->
+                    <button onclick="toggleAudioReader()" id="audioBtn" title="Escuchar / Detener voz" class="p-2 text-slate-300 hover:bg-slate-700 rounded-full transition">
+                        <i class="fa-solid fa-volume-high text-indigo-400" id="audioIcon"></i>
+                    </button>
+                    <!-- Alternar Contraste -->
+                    <button onclick="toggleContrast()" title="Alto contraste" class="p-2 text-slate-300 hover:bg-slate-700 rounded-full transition">
+                        <i class="fa-solid fa-circle-half-stroke"></i>
+                    </button>
+                    <!-- Cambiar Idioma -->
+                    <button onclick="toggleLanguage()" class="px-2.5 py-1 text-xs font-semibold bg-slate-700 hover:bg-slate-600 rounded-md border border-slate-600" id="langBtn">
+                        EN
+                    </button>
+                    
+                    <!-- CTA Principal -->
+                    <button onclick="navigateTo('registro')" class="hidden sm:inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-lg shadow-md hover:shadow-indigo-500/20 transition" data-key="cta_header">
+                        Regístrate
+                    </button>
+
+                    <!-- Hamburguesa Mobile -->
+                    <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-slate-300 hover:bg-slate-700 rounded-lg">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Móvil Desplegable -->
+        <div id="mobileMenu" class="hidden md:hidden bg-slate-800 border-b border-slate-700 px-4 pt-2 pb-4 space-y-2">
+            <button onclick="navigateTo('inicio'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 text-indigo-400 hover:bg-slate-700 rounded-md" data-key="nav_home">Inicio</button>
+            <button onclick="navigateTo('nosotros'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 text-slate-300 hover:bg-slate-700 rounded-md" data-key="nav_about">Nosotros</button>
+            <button onclick="navigateTo('servicios'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 text-slate-300 hover:bg-slate-700 rounded-md" data-key="nav_services">Servicios</button>
+            <button onclick="navigateTo('tecnico'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 text-slate-300 hover:bg-slate-700 rounded-md" data-key="nav_tech">Tema Técnico</button>
+            <button onclick="navigateTo('registro'); toggleMobileMenu()" class="block w-full text-left py-2 px-3 text-slate-300 hover:bg-slate-700 rounded-md" data-key="nav_account">Cuenta y Pago</button>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- 1. PÁGINA DE INICIO -->
+        <section id="sec-inicio" class="page-section space-y-12">
+            <div class="relative rounded-3xl bg-gradient-to-br from-indigo-950 via-slate-900 to-slate-950 p-8 sm:p-12 border border-indigo-500/20 shadow-2xl overflow-hidden">
+                <div class="absolute -top-24 -right-24 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center relative z-10">
+                    <div>
+                        <div class="mb-6">
+                            <img src="Logo_nombre.png" alt="Nobile Tech" class="max-w-[280px] w-full h-auto object-contain" onerror="this.style.display='none'; document.getElementById('alt-brand-name').classList.remove('hidden');">
+                            <h2 id="alt-brand-name" class="hidden text-3xl font-black text-indigo-400">NOBILE TECH</h2>
+                        </div>
+                        <span class="inline-block px-3 py-1 bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-xs font-semibold rounded-full mb-4" data-key="hero_badge">
+                            🚀 Plataforma Educativa Interactiva
+                        </span>
+                        <h1 class="text-4xl sm:text-5xl font-black text-white tracking-tight leading-tight mb-4" data-key="hero_title">
+                            Domina la Lógica de Programación con <span class="text-indigo-400">PSeInt y Algoritmos</span>
+                        </h1>
+                        <p class="text-lg text-slate-300 mb-8" data-key="hero_subtitle">
+                            Aprende a pensar como un desarrollador profesional transformando ideas complejas en pseudocódigo claro y diagramas de flujo estructurados.
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-4">
+                            <button onclick="navigateTo('registro')" class="px-6 py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-600/30 transition transform hover:-translate-y-0.5" data-key="hero_cta1">
+                                Comenzar Gratis Ahora
+                            </button>
+                            <button onclick="navigateTo('tecnico')" class="px-6 py-3.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold rounded-xl transition transform hover:-translate-y-0.5" data-key="hero_cta2">
+                                Probar Simulador PSeInt
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-800/80 backdrop-blur border border-slate-700 p-6 rounded-2xl shadow-xl space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+                            <div class="flex space-x-2">
+                                <span class="w-3 h-3 bg-red-500 rounded-full inline-block"></span>
+                                <span class="w-3 h-3 bg-yellow-500 rounded-full inline-block"></span>
+                                <span class="w-3 h-3 bg-green-500 rounded-full inline-block"></span>
+                            </div>
+                            <span class="text-xs text-slate-400 font-mono">Algoritmo_Ejemplo.pse</span>
+                        </div>
+                        <pre class="code-font text-xs sm:text-sm text-cyan-300 bg-slate-900 p-4 rounded-xl overflow-x-auto">
+<span class="text-indigo-400">Algoritmo</span> Bienvenida
+    <span class="text-pink-400">Escribir</span> <span class="text-emerald-300">"¡Hola Estudiante de Programación!"</span>;
+    <span class="text-pink-400">Definir</span> nivel <span class="text-indigo-400">Como</span> Entero;
+    nivel <- 100;
+    <span class="text-indigo-400">Si</span> nivel >= 100 <span class="text-indigo-400">Entonces</span>
+        <span class="text-pink-400">Escribir</span> <span class="text-emerald-300">"¡Estás listo para dominar PSeInt!"</span>;
+    <span class="text-indigo-400">FinSi</span>
+<span class="text-indigo-400">FinAlgoritmo</span></pre>
+
+                        <div class="bg-indigo-950/60 border border-indigo-800/50 p-4 rounded-xl flex items-center justify-between">
+                            <div>
+                                <h4 class="text-sm font-bold text-white" data-key="card_prod_title">Curso Certificado en Pseudocódigo</h4>
+                                <p class="text-xs text-slate-300" data-key="card_prod_desc">Incluye ejercicios prácticos y certificación oficial.</p>
+                            </div>
+                            <button onclick="navigateTo('servicios')" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg transition" data-key="card_prod_btn">
+                                Saber Más
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN: VIDEO EDUCATIVO -->
+            <div class="bg-slate-800/60 border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6">
+                <div class="text-center max-w-2xl mx-auto space-y-2">
+                    <span class="px-3 py-1 bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-xs font-bold rounded-full uppercase tracking-wider">
+                        <i class="fa-solid fa-circle-play mr-1"></i> Video Promocional
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white" data-key="video_title">
+                        Conoce la Propuesta Educativa de Nobile Tech
+                    </h2>
+                    <p class="text-sm text-slate-300" data-key="video_subtitle">
+                        Descubre cómo nuestros cursos en línea te ayudan a repasar, estudiar y aprender más sobre el desarrollo de software.
+                    </p>
+                </div>
+
+                <div class="max-w-4xl mx-auto rounded-2xl overflow-hidden border border-slate-700 shadow-2xl bg-black relative group">
+                    <video id="demoVideo" controls class="w-full h-auto aspect-video object-cover" poster="Logo_nombre.png">
+                        <source src="video_promocional.mp4" type="video/mp4">
+                        Tu navegador no soporta la reproducción de video HTML5.
+                    </video>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-6 text-xs text-slate-400 text-center">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-clock text-indigo-400"></i>
+                        <span>Duración: Promocional</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-closed-captioning text-indigo-400"></i>
+                        <span>Subtítulos en Español / Inglés</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-layer-group text-indigo-400"></i>
+                        <span>Nivel: Principiante</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Highlights -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div onclick="showFeatureInfo('diagramacion')" class="bg-slate-800/50 border border-slate-700/60 p-6 rounded-2xl hover:border-indigo-500/80 transition cursor-pointer group transform hover:-translate-y-1 shadow-lg hover:shadow-indigo-500/10 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-indigo-500/20 text-indigo-400 rounded-xl flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-diagram-project"></i></div>
+                        <h3 class="text-lg font-bold text-white mb-2 group-hover:text-indigo-300 transition" data-key="feat1_title">Diagramación de Flujo</h3>
+                        <p class="text-sm text-slate-300 mb-4" data-key="feat1_desc">Convierte tus algoritmos escritos en esquemas visuales interactivos de forma automática.</p>
+                    </div>
+                    <button class="w-full py-2 bg-indigo-600/30 hover:bg-indigo-600 border border-indigo-500/40 hover:border-indigo-500 text-indigo-300 hover:text-white text-xs font-bold rounded-lg transition flex items-center justify-center space-x-2">
+                        <span>Entrar y Explorar</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <div onclick="showFeatureInfo('simulacion')" class="bg-slate-800/50 border border-slate-700/60 p-6 rounded-2xl hover:border-indigo-500/80 transition cursor-pointer group transform hover:-translate-y-1 shadow-lg hover:shadow-indigo-500/10 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-cyan-500/20 text-cyan-400 rounded-xl flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-terminal"></i></div>
+                        <h3 class="text-lg font-bold text-white mb-2 group-hover:text-cyan-300 transition" data-key="feat2_title">Simulación en Vivo</h3>
+                        <p class="text-sm text-slate-300 mb-4" data-key="feat2_desc">Ejecuta pseudocódigo en tiempo real directamente desde tu navegador sin instalar nada.</p>
+                    </div>
+                    <button class="w-full py-2 bg-cyan-600/30 hover:bg-cyan-600 border border-cyan-500/40 hover:border-cyan-500 text-cyan-300 hover:text-white text-xs font-bold rounded-lg transition flex items-center justify-center space-x-2">
+                        <span>Probar Simulador</span>
+                        <i class="fa-solid fa-play"></i>
+                    </button>
+                </div>
+
+                <div onclick="showFeatureInfo('ruta')" class="bg-slate-800/50 border border-slate-700/60 p-6 rounded-2xl hover:border-indigo-500/80 transition cursor-pointer group transform hover:-translate-y-1 shadow-lg hover:shadow-indigo-500/10 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <h3 class="text-lg font-bold text-white mb-2 group-hover:text-emerald-300 transition" data-key="feat3_title">Ruta de Aprendizaje</h3>
+                        <p class="text-sm text-slate-300 mb-4" data-key="feat3_desc">Desde conceptos básicos de variables hasta estructuras de control y arreglos complejas.</p>
+                    </div>
+                    <button class="w-full py-2 bg-emerald-600/30 hover:bg-emerald-600 border border-emerald-500/40 hover:border-emerald-500 text-emerald-300 hover:text-white text-xs font-bold rounded-lg transition flex items-center justify-center space-x-2">
+                        <span>Ver Ruta Completa</span>
+                        <i class="fa-solid fa-book-open"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. PÁGINA NOSOTROS -->
+        <section id="sec-nosotros" class="page-section hidden space-y-10">
+            <div class="text-center max-w-3xl mx-auto">
+                <h2 class="text-3xl font-extrabold text-white mb-3" data-key="nosotros_title">Conoce Nuestra Organización</h2>
+                <p class="text-slate-300 text-sm sm:text-base" data-key="nosotros_subtitle">Impulsamos el desarrollo del pensamiento lógico y algorítmico en estudiantes y entusiastas de la tecnología.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 text-slate-700 text-5xl font-black">01</div>
+                    <h3 class="text-xl font-bold text-indigo-400 mb-3" data-key="mision_title">Misión</h3>
+                    <p class="text-sm text-slate-300 leading-relaxed" data-key="mision_desc">Proporcionar herramientas pedagógicas interactivas de alta calidad para facilitar la enseñanza del pseudocódigo PSeInt y la resolución de problemas algorítmicos.</p>
+                </div>
+                <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 text-slate-700 text-5xl font-black">02</div>
+                    <h3 class="text-xl font-bold text-cyan-400 mb-3" data-key="vision_title">Visión</h3>
+                    <p class="text-sm text-slate-300 leading-relaxed" data-key="vision_desc">Ser la plataforma global de referencia para el aprendizaje accesible de fundamentos de programación en habla hispana e internacional.</p>
+                </div>
+                <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 text-slate-700 text-5xl font-black">03</div>
+                    <h3 class="text-xl font-bold text-emerald-400 mb-3" data-key="valores_title">Valores</h3>
+                    <p class="text-sm text-slate-300 leading-relaxed" data-key="valores_desc">Innovación educativa, accesibilidad universal, rigor académico, colaboración abierta y pasión por la enseñanza tecnológica.</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/60 border border-slate-700 p-8 rounded-3xl space-y-6">
+                <h3 class="text-2xl font-bold text-white text-center" data-key="beneficios_header">¿Por qué elegir nuestra plataforma?</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-4">
+                    <div onclick="showFeatureInfo('entorno_seguro')" class="flex flex-col items-center text-center p-5 bg-slate-900/60 border border-slate-700/50 hover:border-indigo-500/80 rounded-2xl transition cursor-pointer group transform hover:-translate-y-1 shadow-md hover:shadow-indigo-500/10">
+                        <div class="w-12 h-12 bg-indigo-500/20 text-indigo-400 rounded-xl flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h4 class="font-bold text-white mb-1 group-hover:text-indigo-300 transition" data-key="b1_title">Entorno Seguro</h4>
+                        <p class="text-xs text-slate-400 mb-3" data-key="b1_desc">Plataforma protegida con verificación de seguridad para usuarios.</p>
+                        <span class="text-[11px] font-semibold text-indigo-400 group-hover:underline flex items-center">saber más <i class="fa-solid fa-chevron-right ml-1 text-[9px]"></i></span>
+                    </div>
+
+                    <div onclick="showFeatureInfo('acceso_247')" class="flex flex-col items-center text-center p-5 bg-slate-900/60 border border-slate-700/50 hover:border-cyan-500/80 rounded-2xl transition cursor-pointer group transform hover:-translate-y-1 shadow-md hover:shadow-cyan-500/10">
+                        <div class="w-12 h-12 bg-cyan-500/20 text-cyan-400 rounded-xl flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <h4 class="font-bold text-white mb-1 group-hover:text-cyan-300 transition" data-key="b2_title">Acceso 24/7</h4>
+                        <p class="text-xs text-slate-400 mb-3" data-key="b2_desc">Aprende a tu propio ritmo desde cualquier dispositivo.</p>
+                        <span class="text-[11px] font-semibold text-cyan-400 group-hover:underline flex items-center">saber más <i class="fa-solid fa-chevron-right ml-1 text-[9px]"></i></span>
+                    </div>
+
+                    <div onclick="showFeatureInfo('simulador_pseint')" class="flex flex-col items-center text-center p-5 bg-slate-900/60 border border-slate-700/50 hover:border-emerald-500/80 rounded-2xl transition cursor-pointer group transform hover:-translate-y-1 shadow-md hover:shadow-emerald-500/10">
+                        <div class="w-12 h-12 bg-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-chalkboard-user"></i>
+                        </div>
+                        <h4 class="font-bold text-white mb-1 group-hover:text-emerald-300 transition" data-key="b3_title">Simulador PSeInt</h4>
+                        <p class="text-xs text-slate-400 mb-3" data-key="b3_desc">Prueba pseudocódigo directamente en la web sin descargar apps.</p>
+                        <span class="text-[11px] font-semibold text-emerald-400 group-hover:underline flex items-center">saber más <i class="fa-solid fa-chevron-right ml-1 text-[9px]"></i></span>
+                    </div>
+
+                    <div onclick="showFeatureInfo('certificacion')" class="flex flex-col items-center text-center p-5 bg-slate-900/60 border border-slate-700/50 hover:border-amber-500/80 rounded-2xl transition cursor-pointer group transform hover:-translate-y-1 shadow-md hover:shadow-amber-500/10">
+                        <div class="w-12 h-12 bg-amber-500/20 text-amber-400 rounded-xl flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-certificate"></i>
+                        </div>
+                        <h4 class="font-bold text-white mb-1 group-hover:text-amber-300 transition" data-key="b4_title">Certificación</h4>
+                        <p class="text-xs text-slate-400 mb-3" data-key="b4_desc">Emisión de comprobante y certificado de aprobación.</p>
+                        <span class="text-[11px] font-semibold text-amber-400 group-hover:underline flex items-center">saber más <i class="fa-solid fa-chevron-right ml-1 text-[9px]"></i></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. PÁGINA SERVICIOS -->
+        <section id="sec-servicios" class="page-section hidden space-y-8">
+            <div class="text-center max-w-2xl mx-auto">
+                <h2 class="text-3xl font-extrabold text-white mb-2" data-key="serv_title">Nuestros Servicios y Productos</h2>
+                <p class="text-slate-300 text-sm" data-key="serv_subtitle">Selecciona el paquete o curso que mejor se adapte a tus necesidades de aprendizaje.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden flex flex-col justify-between hover:border-indigo-500 transition shadow-lg">
+                    <div class="p-6">
+                        <span class="px-2.5 py-1 bg-indigo-500/20 text-indigo-400 text-xs font-bold rounded-full uppercase" data-key="s1_tag">Básico</span>
+                        <h3 class="text-xl font-bold text-white mt-3 mb-2" data-key="s1_title">Fundamentos de PSeInt</h3>
+                        <p class="text-xs text-slate-300 mb-4" data-key="s1_desc">Aprende estructuras secuenciales, tipos de datos, condicionales Si-Entonces y asignación de variables.</p>
+                        <div class="text-3xl font-black text-white mb-4">$19.99 <span class="text-xs text-slate-400 font-normal">/ pago único</span></div>
+                        <ul class="text-xs text-slate-300 space-y-2 mb-6">
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> 15 Módulos interactivos</li>
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Ejercicios guiados en PSeInt</li>
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Soporte por foro</li>
+                        </ul>
+                    </div>
+                    <div class="p-6 bg-slate-900/50 border-t border-slate-700">
+                        <button onclick="selectPackage('Fundamentos de PSeInt')" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold rounded-xl transition" data-key="btn_buy">
+                            Comprar Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-800 border-2 border-indigo-500 rounded-2xl overflow-hidden flex flex-col justify-between hover:border-indigo-400 transition shadow-2xl relative">
+                    <div class="bg-indigo-600 text-white text-xs font-black text-center py-1 uppercase tracking-wider" data-key="s2_popular">Más Popular</div>
+                    <div class="p-6">
+                        <span class="px-2.5 py-1 bg-cyan-500/20 text-cyan-400 text-xs font-bold rounded-full uppercase" data-key="s2_tag">Pro</span>
+                        <h3 class="text-xl font-bold text-white mt-3 mb-2" data-key="s2_title">Master en Algoritmos & Diagramas</h3>
+                        <p class="text-xs text-slate-300 mb-4" data-key="s2_desc">Domina bucles (Mientras, Para, Repetir), arreglos unidimensionales/bidimensionales y funciones.</p>
+                        <div class="text-3xl font-black text-white mb-4">$39.99 <span class="text-xs text-slate-400 font-normal">/ pago único</span></div>
+                        <ul class="text-xs text-slate-300 space-y-2 mb-6">
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Todo lo del plan Básico</li>
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Generador de diagramas de flujo</li>
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Certificado digital verificado</li>
+                        </ul>
+                    </div>
+                    <div class="p-6 bg-slate-900/50 border-t border-slate-700">
+                        <button onclick="selectPackage('Master en Algoritmos & Diagramas')" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold rounded-xl transition" data-key="btn_buy">
+                            Comprar Ahora
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden flex flex-col justify-between hover:border-indigo-500 transition shadow-lg">
+                    <div class="p-6">
+                        <span class="px-2.5 py-1 bg-purple-500/20 text-purple-400 text-xs font-bold rounded-full uppercase" data-key="s3_tag">Premium</span>
+                        <h3 class="text-xl font-bold text-white mt-3 mb-2" data-key="s3_title">Asesoría de Lógica Empresarial</h3>
+                        <p class="text-xs text-slate-300 mb-4" data-key="s3_desc">Tutoría personalizada 1 a 1 para resolución de dudas complejas y optimización de algoritmos.</p>
+                        <div class="text-3xl font-black text-white mb-4">$79.99 <span class="text-xs text-slate-400 font-normal">/ sesión</span></div>
+                        <ul class="text-xs text-slate-300 space-y-2 mb-6">
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Tutoría en vivo por videollamada</li>
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Revisión personalizada de código</li>
+                            <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Acceso a biblioteca exclusiva</li>
+                        </ul>
+                    </div>
+                    <div class="p-6 bg-slate-900/50 border-t border-slate-700">
+                        <button onclick="selectPackage('Asesoría de Lógica Empresarial')" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold rounded-xl transition" data-key="btn_buy">
+                            Comprar Ahora
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. PÁGINA REGISTRARSE / LOGIN / COMPRA -->
+        <section id="sec-registro" class="page-section hidden max-w-3xl mx-auto space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold text-white mb-2" data-key="reg_title">Portal de Usuario y Verificación de Pago</h2>
+                <p class="text-slate-300 text-sm" data-key="reg_subtitle">Completa el registro, autentícate y verifica tus pagos seguros con emisión de ticket impreso.</p>
+            </div>
+
+            <div class="flex border-b border-slate-700">
+                <button onclick="switchTab('auth-tab')" id="btn-auth-tab" class="py-3 px-6 text-sm font-bold border-b-2 border-indigo-500 text-indigo-400">
+                    <i class="fa-solid fa-user-plus mr-2"></i>Registro & Login
+                </button>
+                <button onclick="switchTab('checkout-tab')" id="btn-checkout-tab" class="py-3 px-6 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200">
+                    <i class="fa-solid fa-credit-card mr-2"></i>Pasarela de Pago Pay
+                </button>
+            </div>
+
+            <!-- Sub-sección Auth -->
+            <div id="auth-tab" class="bg-slate-800 border border-slate-700 p-6 sm:p-8 rounded-2xl shadow-xl space-y-6">
+                <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-4">
+                    <h3 class="text-xl font-bold text-white mb-4 border-b border-slate-700 pb-2" data-key="form_reg_heading">Formulario de Registro de Usuario</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1" data-key="lbl_name">Nombre Completo</label>
+                            <input type="text" id="regName" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1" data-key="lbl_email">Correo Electrónico</label>
+                            <input type="email" id="regEmail" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1" data-key="lbl_user">Usuario</label>
+                            <input type="text" id="regUser" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1" data-key="lbl_pass">Contraseña</label>
+                            <input type="password" id="regPass" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition shadow-lg" data-key="btn_register">
+                        Crear Cuenta
+                    </button>
+                </form>
+
+                <div id="authAlert" class="hidden p-3 rounded-lg text-sm text-center font-semibold"></div>
+            </div>
+
+            <!-- Sub-sección Checkout & Ticket -->
+            <div id="checkout-tab" class="hidden bg-slate-800 border border-slate-700 p-6 sm:p-8 rounded-2xl shadow-xl space-y-6">
+                <h3 class="text-xl font-bold text-white mb-2 border-b border-slate-700 pb-2" data-key="checkout_heading">Verificación de Pago Seguro Pay</h3>
+                
+                <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-700 space-y-4">
+                    <p class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2"><i class="fa-solid fa-list-check text-indigo-400 mr-2"></i> Selecciona los servicios que necesitas:</p>
+                    
+                    <div class="space-y-3">
+                        <label class="flex items-center justify-between p-3 rounded-lg bg-slate-800 border border-slate-700 hover:border-indigo-500 transition cursor-pointer">
+                            <div class="flex items-center space-x-3">
+                                <input type="checkbox" class="service-checkbox w-4 h-4 text-indigo-600 rounded focus:ring-indigo-500" value="19.99" data-name="Fundamentos de PSeInt" onchange="updateCheckoutTotal()" checked>
+                                <div>
+                                    <p class="text-sm font-bold text-white">Fundamentos de PSeInt</p>
+                                    <p class="text-xs text-slate-400">Estructuras básicas, condicionales y variables</p>
+                                </div>
+                            </div>
+                            <span class="text-sm font-bold text-indigo-300">$19.99 USD</span>
+                        </label>
+
+                        <label class="flex items-center justify-between p-3 rounded-lg bg-slate-800 border border-slate-700 hover:border-indigo-500 transition cursor-pointer">
+                            <div class="flex items-center space-x-3">
+                                <input type="checkbox" class="service-checkbox w-4 h-4 text-indigo-600 rounded focus:ring-indigo-500" value="39.99" data-name="Master en Algoritmos & Diagramas" onchange="updateCheckoutTotal()">
+                                <div>
+                                    <p class="text-sm font-bold text-white">Master en Algoritmos & Diagramas</p>
+                                    <p class="text-xs text-slate-400">Bucles, arreglos 1D/2D y diagrama de flujo</p>
+                                </div>
+                            </div>
+                            <span class="text-sm font-bold text-indigo-300">$39.99 USD</span>
+                        </label>
+
+                        <label class="flex items-center justify-between p-3 rounded-lg bg-slate-800 border border-slate-700 hover:border-indigo-500 transition cursor-pointer">
+                            <div class="flex items-center space-x-3">
+                                <input type="checkbox" class="service-checkbox w-4 h-4 text-indigo-600 rounded focus:ring-indigo-500" value="79.99" data-name="Asesoría de Lógica Empresarial" onchange="updateCheckoutTotal()">
+                                <div>
+                                    <p class="text-sm font-bold text-white">Asesoría de Lógica Empresarial</p>
+                                    <p class="text-xs text-slate-400">Tutoría personalizada 1 a 1 en vivo</p>
+                                </div>
+                            </div>
+                            <span class="text-sm font-bold text-indigo-300">$79.99 USD</span>
+                        </label>
+                    </div>
+
+                    <div class="flex justify-between items-center pt-3 border-t border-slate-700">
+                        <div>
+                            <p class="text-xs text-slate-400" data-key="lbl_selected_prod">Servicios Seleccionados:</p>
+                            <p id="checkoutCourseName" class="text-sm font-bold text-indigo-300">Fundamentos de PSeInt</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs text-slate-400" data-key="lbl_total">Total a pagar:</p>
+                            <p id="checkoutPrice" class="text-xl font-black text-emerald-400">$19.99 USD</p>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="paymentForm" onsubmit="processPayment(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1" data-key="lbl_card_holder">Nombre en la Tarjeta</label>
+                        <input type="text" id="cardHolder" required placeholder="Juan Pérez" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1" data-key="lbl_card_num">Número de Tarjeta (Pay Security)</label>
+                            <input type="text" id="cardNumber" maxlength="19" required placeholder="4532 0000 0000 0000" oninput="formatCardNumber(this)" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-xs font-medium text-slate-300 mb-1">MM/AA</label>
+                                <input type="text" id="cardExp" maxlength="5" required placeholder="12/28" oninput="formatCardExp(this)" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-300 mb-1">CVC</label>
+                                <input type="password" id="cardCvc" maxlength="4" required placeholder="123" oninput="this.value=this.value.replace(/\D/g,'')" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" id="paySubmitBtn" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition shadow-lg flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span data-key="btn_process_pay">Verificar y Pagar Ahora</span>
+                    </button>
+                </form>
+
+                <div id="ticketContainer" class="hidden bg-slate-900 border border-emerald-500/40 p-6 rounded-xl space-y-4 text-slate-200">
+                    <div id="printable-ticket" class="bg-white text-slate-900 p-6 rounded-lg font-mono text-sm space-y-3">
+                        <div class="text-center border-b pb-3 border-slate-300">
+                            <h4 class="font-extrabold text-lg">*** TICKET DE COMPRA - NOBILE TECH ***</h4>
+                            <p class="text-xs text-slate-600">Verificación de Pago Exitoso (Pay Guard)</p>
+                            <p class="text-xs text-slate-500" id="ticketDate"></p>
+                        </div>
+                        <div class="space-y-1 text-xs">
+                            <p><strong>ID Transacción:</strong> <span id="ticketId">#TX-982347</span></p>
+                            <p><strong>Cliente:</strong> <span id="ticketClient">Juan Pérez</span></p>
+                            <p><strong>Servicios Adquiridos:</strong> <span id="ticketItem">Fundamentos de PSeInt</span></p>
+                            <p><strong>Monto Pagado:</strong> <span id="ticketAmount">$19.99 USD</span></p>
+                            <p><strong>Estado:</strong> <span class="text-emerald-700 font-bold">APROBADO & VERIFICADO</span></p>
+                        </div>
+                        <div class="border-t pt-2 border-slate-300 text-center text-xs text-slate-600">
+                            <p>¡Gracias por tu compra! Tu acceso está activo.</p>
+                            <p>www.nobiletech.com</p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center pt-2">
+                        <span class="text-emerald-400 text-xs font-semibold"><i class="fa-solid fa-circle-check mr-1"></i> Transacción Completada</span>
+                        <button onclick="window.print()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg transition">
+                            <i class="fa-solid fa-print mr-1"></i> Imprimir Ticket
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. PÁGINA TEMA TÉCNICO -->
+        <section id="sec-tecnico" class="page-section hidden space-y-8">
+            <div class="text-center max-w-3xl mx-auto">
+                <h2 class="text-3xl font-extrabold text-white mb-2" data-key="tech_title">Tema Técnico: Algoritmos y PSeInt</h2>
+                <p class="text-slate-300 text-sm" data-key="tech_subtitle">Aprende la teoría fundamental y prueba pseudocódigo interactivo directamente en nuestro intérprete integrado.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl space-y-3">
+                    <h3 class="text-xl font-bold text-indigo-400" data-key="t1_head">¿Qué es un Algoritmo?</h3>
+                    <p class="text-sm text-slate-300 leading-relaxed" data-key="t1_body">Un algoritmo es una secuencia finita, ordenada y no ambigua de pasos que permite resolver un problema o realizar una tarea. Posee entrada, procesamiento y salida.</p>
+                </div>
+                <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl space-y-3">
+                    <h3 class="text-xl font-bold text-cyan-400" data-key="t2_head">¿Qué es PSeInt?</h3>
+                    <p class="text-sm text-slate-300 leading-relaxed" data-key="t2_body">PSeInt (Pseudocode Interpreter) es una herramienta educativa diseñada para ayudar a los estudiantes en sus primeros pasos en programación mediante un pseudocódigo intuitivo en español.</p>
+                </div>
+            </div>
+
+            <!-- Entorno Interactivo -->
+            <div class="bg-slate-800 border border-indigo-500/40 rounded-2xl p-6 shadow-2xl space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-700 pb-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-laptop-code text-indigo-400 mr-2"></i>Simulador Interactivo de PSeInt</h3>
+                        <p class="text-xs text-slate-400">Selecciona un ejemplo o escribe tu propio pseudocódigo para ejecutarlo.</p>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <label class="text-xs text-slate-300">Ejemplo:</label>
+                        <select id="codeTemplate" onchange="loadTemplate()" class="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-lg p-2 focus:outline-none">
+                            <option value="suma">Suma de dos números</option>
+                            <option value="edad">Verificación de Edad</option>
+                            <option value="factorial">Cálculo de Factorial</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div class="flex flex-col space-y-2">
+                        <label class="text-xs font-semibold text-slate-300 flex items-center justify-between">
+                            <span>Código PSeInt</span>
+                            <span class="text-indigo-400 font-mono text-xs">Pseudocódigo</span>
+                        </label>
+                        <textarea id="pseintCode" class="w-full h-64 bg-slate-950 text-cyan-300 code-font p-4 rounded-xl border border-slate-700 text-sm focus:outline-none focus:border-indigo-500 resize-none"></textarea>
+                    </div>
+
+                    <div class="flex flex-col space-y-2">
+                        <label class="text-xs font-semibold text-slate-300 flex items-center justify-between">
+                            <span>Consola de Salida</span>
+                            <span class="text-emerald-400 font-mono text-xs">Ejecución</span>
+                        </label>
+                        <div id="pseintOutput" class="w-full h-64 bg-black text-emerald-400 code-font p-4 rounded-xl border border-slate-700 text-sm overflow-y-auto font-mono leading-relaxed whitespace-pre-wrap">> Haz clic en "Ejecutar Algoritmo" para ver la salida aquí...</div>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
+                    <button onclick="runPSeIntSimulator()" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm rounded-xl transition shadow-lg flex items-center">
+                        <i class="fa-solid fa-play mr-2"></i> Ejecutar Algoritmo
+                    </button>
+                    <button onclick="clearConsole()" class="px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 font-medium text-xs rounded-xl transition">
+                        Limpiar Consola
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-6 shadow-xl space-y-4">
+                <div class="border-b border-slate-700 pb-3">
+                    <h3 class="text-lg font-bold text-white flex items-center">
+                        <i class="fa-solid fa-plus-circle text-indigo-400 mr-2"></i> Agregar Nuevo Módulo o Ejercicio
+                    </h3>
+                    <p class="text-xs text-slate-400">Guarda un nuevo ejercicio personalizado para probarlo dinámicamente en el selector del simulador.</p>
+                </div>
+
+                <form id="addModuleForm" onsubmit="handleAddModule(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">Identificador Único</label>
+                            <input type="text" id="modKey" required placeholder="ej: mayordeedad" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">Nombre Visible del Ejercicio</label>
+                            <input type="text" id="modTitle" required placeholder="ej: Mayoría de Edad" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">Código PSeInt del Módulo</label>
+                        <textarea id="modCode" required rows="4" placeholder="Algoritmo NuevoModulo&#10;    Escribir &quot;Hola desde mi nuevo módulo&quot;;&#10;FinAlgoritmo" class="w-full bg-slate-950 text-cyan-300 code-font p-3 rounded-lg border border-slate-700 text-xs focus:outline-none focus:border-indigo-500 resize-none"></textarea>
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="submit" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl transition shadow-lg flex items-center">
+                            <i class="fa-solid fa-floppy-disk mr-2"></i> Agregar Módulo al Simulador
+                        </button>
+                    </div>
+                </form>
+                <div id="moduleAlert" class="hidden p-3 rounded-lg text-xs font-semibold text-center"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- PIE DE PÁGINA (FOOTER) -->
+    <footer class="bg-slate-950 border-t border-slate-800 text-slate-400 text-sm mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                
+                <div class="space-y-3">
+                    <div class="flex items-center space-x-3">
+                        <img src="Logo.png" alt="Nobile Tech Logo" class="h-8 w-auto object-contain" onerror="this.src='https://via.placeholder.com/32x32/6366f1/ffffff?text=NT'">
+                        <span class="text-lg font-bold text-white">Nobile Tech</span>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed" data-key="footer_desc">
+                        Plataforma educativa líder en enseñanza de lógica, diagramas de flujo y pseudocódigo PSeInt.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-3" data-key="footer_legal">Enlaces Legales</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><button onclick="openModal('Aviso Legal', 'Este sitio web cumple con todas las regulaciones vigentes de contenido educativo y protección al consumidor.')" class="hover:text-indigo-400 transition" data-key="l_notice">Aviso Legal</button></li>
+                        <li><button onclick="openModal('Política de Privacidad', 'Garantizamos la confidencialidad de tus datos de usuario conforme a los estándares de seguridad web.')" class="hover:text-indigo-400 transition" data-key="l_privacy">Política de Privacidad</button></li>
+                        <li><button onclick="openModal('Términos de Servicio', 'Al utilizar nuestra plataforma, aceptas los términos de uso ético e interactivo de nuestros servicios.')" class="hover:text-indigo-400 transition" data-key="l_terms">Términos de Servicio</button></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-3" data-key="footer_contact">Contacto</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><i class="fa-solid fa-envelope mr-2 text-indigo-400"></i> nobiletech@gmail.com</li>
+                        <li><i class="fa-solid fa-phone mr-2 text-indigo-400"></i> +503 6030-4717</li>
+                        <li><i class="fa-solid fa-location-dot mr-2 text-indigo-400"></i> Av. Tecnológica 101, Ciudad Ciencia</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-3" data-key="footer_social">Redes Sociales</h4>
+                    <div class="flex space-x-3">
+                        <a href="https://wa.me/50360304717" target="_blank" class="w-9 h-9 bg-slate-900 border border-slate-700 rounded-lg flex items-center justify-center hover:bg-indigo-600 hover:text-white transition" title="WhatsApp"><i class="fa-brands fa-whatsapp text-base"></i></a>
+                        <a href="https://www.facebook.com/pages/creation/?ref_type=comet_home" target="_blank" class="w-9 h-9 bg-slate-900 border border-slate-700 rounded-lg flex items-center justify-center hover:bg-indigo-600 hover:text-white transition" title="Facebook"><i class="fa-brands fa-facebook-f text-base"></i></a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="border-t border-slate-800 pt-6 text-center text-xs text-slate-500">
+                © 2026 Nobile Tech Inc. Todos los derechos reservados. Desarrollado para Módulo 1.5 Desarrollo Web.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modales -->
+    <div id="featureModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-lg w-full p-6 space-y-5 shadow-2xl relative">
+            <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+                <div class="flex items-center space-x-3">
+                    <div id="featureModalIcon" class="w-10 h-10 rounded-xl flex items-center justify-center text-lg"></div>
+                    <h3 id="featureModalTitle" class="text-lg font-bold text-white"></h3>
+                </div>
+                <button onclick="closeFeatureModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <div id="featureModalBody" class="text-sm text-slate-300 space-y-3 leading-relaxed"></div>
+
+            <div id="featureModalAction" class="pt-2 flex justify-end space-x-3">
+                <button onclick="closeFeatureModal()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold rounded-lg transition">
+                    Cerrar
+                </button>
+                <button id="featureModalMainBtn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg transition">
+                    Ir al Simulador
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="legalModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+            <h3 id="modalTitle" class="text-lg font-bold text-white"></h3>
+            <p id="modalBody" class="text-xs text-slate-300 leading-relaxed"></p>
+            <button onclick="closeModal()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-lg transition">
+                Cerrar
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT COMPLETO CORREGIDO Y COMPLETADO -->
+    <script>
+        let currentLang = 'es';
+        let isSpeaking = false;
+        let availableVoices = [];
+
+        // URL del Web App de Google Apps Script para guardar registros en Google Sheets
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwqS2s410x-d67E961A3OIn3t52oK3IWW-X2p729dD28oH5XgN4a_Cq/exec';
+
+        // LÓGICA DE CONTROL DE INACTIVIDAD (1 MINUTO)
+        let inactivityTimer;
+        const INACTIVITY_LIMIT = 60000; // 1 minuto en milisegundos
+
+        function initInactivityTimer() {
+            const userEvents = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart', 'click'];
+            userEvents.forEach(event => {
+                window.addEventListener(event, resetInactivityTimer, true);
+            });
+            resetInactivityTimer();
+        }
+
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(handleInactivityTimeout, INACTIVITY_LIMIT);
+        }
+
+        function handleInactivityTimeout() {
+            alert("Has estado inactivo durante 1 minuto. La página se reiniciará por razones de seguridad.");
+            location.reload();
+        }
+
+        const templates = {
+            suma: `Algoritmo SumarNumeros
+    Definir num1, num2, resultado Como Entero;
+    num1 <- 15;
+    num2 <- 25;
+    resultado <- num1 + num2;
+    Escribir "El primer número es: ", num1;
+    Escribir "El segundo número es: ", num2;
+    Escribir "La suma total es: ", resultado;
+FinAlgoritmo`,
+            edad: `Algoritmo VerificarEdad
+    Definir edad Como Entero;
+    edad <- 18;
+    Escribir "Edad ingresada: ", edad;
+    Si edad >= 18 Entonces
+        Escribir "Acceso Autorizado: Es mayor de edad.";
+    Sino
+        Escribir "Acceso Restringido: Es menor de edad.";
+    FinSi
+FinAlgoritmo`,
+            factorial: `Algoritmo CalcularFactorial
+    Definir n, i, fact Como Entero;
+    n <- 5;
+    fact <- 1;
+    Para i <- 1 Hasta n Con Paso 1 Hacer
+        fact <- fact * i;
+    FinPara
+    Escribir "El factorial de ", n, " es: ", fact;
+FinAlgoritmo`
+        };
+
+        const i18n = {
+            es: {
+                nav_home: "Inicio",
+                nav_about: "Nosotros",
+                nav_services: "Servicios",
+                nav_tech: "Tema Técnico",
+                nav_account: "Cuenta y Pago",
+                cta_header: "Regístrate",
+                hero_badge: "🚀 Plataforma Educativa Interactiva",
+                hero_title: "Domina la Lógica de Programación con PSeInt y Algoritmos",
+                hero_subtitle: "Aprende a pensar como un desarrollador profesional transformando ideas complejas en pseudocódigo claro y diagramas de flujo estructurados.",
+                hero_cta1: "Comenzar Gratis Ahora",
+                hero_cta2: "Probar Simulador PSeInt",
+                card_prod_title: "Curso Certificado en Pseudocódigo",
+                card_prod_desc: "Incluye ejercicios prácticos y certificación oficial.",
+                card_prod_btn: "Saber Más",
+                video_title: "Conoce la Propuesta Educativa de Nobile Tech",
+                video_subtitle: "Descubre cómo nuestros cursos en línea te ayudan a repasar, estudiar y aprender más sobre el desarrollo de software.",
+                feat1_title: "Diagramación de Flujo",
+                feat1_desc: "Convierte tus algoritmos escritos en esquemas visuales interactivos de forma automática.",
+                feat2_title: "Simulación en Vivo",
+                feat2_desc: "Ejecuta pseudocódigo en tiempo real directamente desde tu navegador sin instalar nada.",
+                feat3_title: "Ruta de Aprendizaje",
+                feat3_desc: "Desde conceptos básicos de variables hasta estructuras de control y arreglos complejas.",
+                nosotros_title: "Conoce Nuestra Organización",
+                nosotros_subtitle: "Impulsamos el desarrollo del pensamiento lógico y algorítmico en estudiantes y entusiastas de la tecnología.",
+                mision_title: "Misión",
+                mision_desc: "Proporcionar herramientas pedagógicas interactivas de alta calidad para facilitar la enseñanza del pseudocódigo PSeInt y la resolución de problemas algorítmicos.",
+                vision_title: "Visión",
+                vision_desc: "Ser la plataforma global de referencia para el aprendizaje accesible de fundamentos de programación en habla hispana e internacional.",
+                valores_title: "Valores",
+                valores_desc: "Innovación educativa, accesibilidad universal, rigor académico, colaboración abierta y pasión por la enseñanza tecnológica.",
+                beneficios_header: "¿Por qué elegir nuestra plataforma?",
+                b1_title: "Entorno Seguro",
+                b1_desc: "Plataforma protegida con verificación de seguridad para usuarios.",
+                b2_title: "Acceso 24/7",
+                b2_desc: "Aprende a tu propio ritmo desde cualquier dispositivo.",
+                b3_title: "Simulador PSeInt",
+                b3_desc: "Prueba pseudocódigo directamente en la web sin descargar apps.",
+                b4_title: "Certificación",
+                b4_desc: "Emisión de comprobante y certificado de aprobación.",
+                serv_title: "Nuestros Servicios y Productos",
+                serv_subtitle: "Selecciona el paquete o curso que mejor se adapte a tus necesidades de aprendizaje.",
+                s1_tag: "Básico",
+                s1_title: "Fundamentos de PSeInt",
+                s1_desc: "Aprende estructuras secuenciales, tipos de datos, condicionales Si-Entonces y asignación de variables.",
+                s2_popular: "Más Popular",
+                s2_tag: "Pro",
+                s2_title: "Master en Algoritmos & Diagramas",
+                s2_desc: "Domina bucles (Mientras, Para, Repetir), arreglos unidimensionales/bidimensionales y funciones.",
+                s3_tag: "Premium",
+                s3_title: "Asesoría de Lógica Empresarial",
+                s3_desc: "Tutoría personalizada 1 a 1 para resolución de dudas complejas y optimización de algoritmos.",
+                btn_buy: "Comprar Ahora",
+                reg_title: "Portal de Usuario y Verificación de Pago",
+                reg_subtitle: "Completa el registro, autentícate y verifica tus pagos seguros con emisión de ticket impreso.",
+                form_reg_heading: "Formulario de Registro de Usuario",
+                lbl_name: "Nombre Completo",
+                lbl_email: "Correo Electrónico",
+                lbl_user: "Usuario",
+                lbl_pass: "Contraseña",
+                btn_register: "Crear Cuenta",
+                checkout_heading: "Verificación de Pago Seguro Pay",
+                lbl_selected_prod: "Servicios Seleccionados:",
+                lbl_total: "Total a pagar:",
+                lbl_card_holder: "Nombre en la Tarjeta",
+                lbl_card_num: "Número de Tarjeta (Pay Security)",
+                btn_process_pay: "Verificar y Pagar Ahora",
+                tech_title: "Tema Técnico: Algoritmos y PSeInt",
+                tech_subtitle: "Aprende la teoría fundamental y prueba pseudocódigo interactivo directamente en nuestro intérprete integrado.",
+                t1_head: "¿Qué es un Algoritmo?",
+                t1_body: "Un algoritmo es una secuencia finita, ordenada y no ambigua de pasos que permite resolver un problema o realizar una tarea. Posee entrada, procesamiento y salida.",
+                t2_head: "¿Qué es PSeInt?",
+                t2_body: "PSeInt (Pseudocode Interpreter) es una herramienta educativa diseñada para ayudar a los estudiantes en sus primeros pasos en programación mediante un pseudocódigo intuitivo en español.",
+                footer_desc: "Plataforma educativa líder en enseñanza de lógica, diagramas de flujo y pseudocódigo PSeInt.",
+                footer_legal: "Enlaces Legales",
+                l_notice: "Aviso Legal",
+                l_privacy: "Política de Privacidad",
+                l_terms: "Términos de Servicio",
+                footer_contact: "Contacto",
+                footer_social: "Redes Sociales"
+            },
+            en: {
+                nav_home: "Home",
+                nav_about: "About Us",
+                nav_services: "Services",
+                nav_tech: "Technical Topic",
+                nav_account: "Account & Pay",
+                cta_header: "Sign Up",
+                hero_badge: "🚀 Interactive Educational Platform",
+                hero_title: "Master Programming Logic with PSeInt & Algorithms",
+                hero_subtitle: "Learn to think like a professional developer by turning complex ideas into clear pseudocode and flowcharts.",
+                hero_cta1: "Start Free Now",
+                hero_cta2: "Try PSeInt Simulator",
+                card_prod_title: "Certified Pseudocode Course",
+                card_prod_desc: "Includes practical exercises and official certification.",
+                card_prod_btn: "Learn More",
+                video_title: "Discover Nobile Tech's Educational Offer",
+                video_subtitle: "Find out how our online courses help you review, study, and learn more about software development.",
+                feat1_title: "Flowchart Diagramming",
+                feat1_desc: "Automatically convert written algorithms into interactive visual flowcharts.",
+                feat2_title: "Live Simulation",
+                feat2_desc: "Run pseudocode directly inside your browser in real-time.",
+                feat3_title: "Learning Pathway",
+                feat3_desc: "From basic variable concepts to advanced control structures and arrays.",
+                nosotros_title: "About Our Organization",
+                nosotros_subtitle: "We foster logical and algorithmic thinking in students and technology enthusiasts.",
+                mision_title: "Mission",
+                mision_desc: "Provide high-quality interactive tools to ease teaching PSeInt pseudocode and algorithmic problem solving.",
+                vision_title: "Vision",
+                vision_desc: "Be the global reference platform for accessible programming fundamentals learning.",
+                valores_title: "Values",
+                valores_desc: "Educational innovation, universal accessibility, academic rigor, open collaboration.",
+                beneficios_header: "Why choose our platform?",
+                b1_title: "Secure Environment",
+                b1_desc: "Protected platform with user security verification.",
+                b2_title: "24/7 Access",
+                b2_desc: "Learn at your own pace from any platform or device.",
+                b3_title: "PSeInt Simulator",
+                b3_desc: "Test pseudocode online without downloading applications.",
+                b4_title: "Certification",
+                b4_desc: "Issuance of verified certificate and purchase ticket.",
+                serv_title: "Our Services & Products",
+                serv_subtitle: "Choose the package or course that best fits your learning goals.",
+                s1_tag: "Basic",
+                s1_title: "PSeInt Fundamentals",
+                s1_desc: "Learn sequential structures, data types, If-Then conditionals, and variable assignment.",
+                s2_popular: "Most Popular",
+                s2_tag: "Pro",
+                s2_title: "Algorithms & Diagrams Master",
+                s2_desc: "Master loops (While, For, Repeat), 1D/2D arrays, and functions.",
+                s3_tag: "Premium",
+                s3_title: "Business Logic Mentorship",
+                s3_desc: "1-on-1 personalized tutoring for complex algorithmic optimization.",
+                btn_buy: "Buy Now",
+                reg_title: "User Portal & Payment Verification",
+                reg_subtitle: "Complete registration, log in, and verify secure payments with printable tickets.",
+                form_reg_heading: "User Registration Form",
+                lbl_name: "Full Name",
+                lbl_email: "Email Address",
+                lbl_user: "Username",
+                lbl_pass: "Password",
+                btn_register: "Create Account",
+                checkout_heading: "Pay Security Verification",
+                lbl_selected_prod: "Selected Services:",
+                lbl_total: "Total Amount:",
+                lbl_card_holder: "Cardholder Name",
+                lbl_card_num: "Card Number (Pay Security)",
+                btn_process_pay: "Verify and Pay Now",
+                tech_title: "Technical Topic: Algorithms & PSeInt",
+                tech_subtitle: "Learn core theory and run interactive pseudocode directly in our built-in simulator.",
+                t1_head: "What is an Algorithm?",
+                t1_body: "An algorithm is a finite, ordered, unambiguous sequence of steps designed to solve a problem.",
+                t2_head: "What is PSeInt?",
+                t2_body: "PSeInt is an educational tool designed to help students write intuitive pseudocode in Spanish/English.",
+                footer_desc: "Leading educational platform for teaching logic, flowcharts, and PSeInt pseudocode.",
+                footer_legal: "Legal Links",
+                l_notice: "Legal Notice",
+                l_privacy: "Privacy Policy",
+                l_terms: "Terms of Service",
+                footer_contact: "Contact",
+                footer_social: "Social Media"
+            }
+        };
+
+        window.onload = function() {
+            loadTemplate();
+            initAudioVoices();
+            updateCheckoutTotal();
+            initInactivityTimer();
+        };
+
+        function formatCardNumber(input) {
+            let val = input.value.replace(/\D/g, '');
+            let formatted = val.match(/.{1,4}/g)?.join(' ') || val;
+            input.value = formatted.substring(0, 19);
+        }
+
+        function formatCardExp(input) {
+            let val = input.value.replace(/\D/g, '');
+            if (val.length >= 3) {
+                input.value = val.substring(0, 2) + '/' + val.substring(2, 4);
+            } else {
+                input.value = val;
+            }
+        }
+
+        function initAudioVoices() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.onvoiceschanged = () => {
+                    availableVoices = window.speechSynthesis.getVoices();
+                };
+            }
+        }
+
+        function handleAddModule(e) {
+            e.preventDefault();
+            const key = document.getElementById('modKey').value.trim().toLowerCase().replace(/\s+/g, '_');
+            const title = document.getElementById('modTitle').value.trim();
+            const code = document.getElementById('modCode').value;
+            const alertBox = document.getElementById('moduleAlert');
+
+            if (!key || !title || !code) return;
+
+            templates[key] = code;
+
+            const select = document.getElementById('codeTemplate');
+            const option = document.createElement('option');
+            option.value = key;
+            option.textContent = title;
+            select.appendChild(option);
+
+            select.value = key;
+            loadTemplate();
+
+            alertBox.classList.remove('hidden', 'bg-red-500/20', 'text-red-300');
+            alertBox.classList.add('bg-emerald-500/20', 'text-emerald-300', 'border', 'border-emerald-500/30');
+            alertBox.textContent = `¡Módulo "${title}" agregado con éxito al simulador!`;
+
+            document.getElementById('addModuleForm').reset();
+
+            setTimeout(() => {
+                alertBox.classList.add('hidden');
+            }, 3000);
+        }
+
+        function updateCheckoutTotal() {
+            const checkboxes = document.querySelectorAll('.service-checkbox');
+            let total = 0;
+            let selectedNames = [];
+
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    total += parseFloat(cb.value);
+                    selectedNames.push(cb.getAttribute('data-name'));
+                }
+            });
+
+            const priceElem = document.getElementById('checkoutPrice');
+            const nameElem = document.getElementById('checkoutCourseName');
+
+            if (selectedNames.length === 0) {
+                nameElem.textContent = 'Ningún servicio seleccionado';
+                priceElem.textContent = '$0.00 USD';
+            } else {
+                nameElem.textContent = selectedNames.join(', ');
+                priceElem.textContent = '$' + total.toFixed(2) + ' USD';
+            }
+        }
+
+        function selectPackage(serviceName) {
+            const checkboxes = document.querySelectorAll('.service-checkbox');
+            checkboxes.forEach(cb => {
+                cb.checked = (cb.getAttribute('data-name') === serviceName);
+            });
+
+            updateCheckoutTotal();
+            navigateTo('registro');
+            switchTab('checkout-tab');
+        }
+
+        function navigateTo(sectionId) {
+            stopAudioReader();
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden'));
+            const targetSection = document.getElementById('sec-' + sectionId);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function showFeatureInfo(type) {
+            const iconContainer = document.getElementById('featureModalIcon');
+            const titleElem = document.getElementById('featureModalTitle');
+            const bodyElem = document.getElementById('featureModalBody');
+            const mainBtn = document.getElementById('featureModalMainBtn');
+
+            if (type === 'diagramacion') {
+                iconContainer.className = "w-10 h-10 rounded-xl flex items-center justify-center text-lg bg-indigo-500/20 text-indigo-400";
+                iconContainer.innerHTML = '<i class="fa-solid fa-diagram-project"></i>';
+                titleElem.textContent = 'Diagramación de Flujo';
+                bodyElem.innerHTML = `
+                    <p>Un <strong>Diagrama de Flujo</strong> es la representación gráfica de un algoritmo. Utiliza símbolos estandarizados para mostrar cada paso de la solución:</p>
+                    <ul class="list-disc pl-5 space-y-1 text-slate-300 text-xs">
+                        <li><strong>Óvalos:</strong> Indican el Inicio y Fin del algoritmo.</li>
+                        <li><strong>Paralelogramos:</strong> Representan la Entrada y Salida de datos.</li>
+                        <li><strong>Rectángulos:</strong> Indican Procesos o asignaciones de variables.</li>
+                        <li><strong>Rombos:</strong> Toman Decisiones condicionales.</li>
+                    </ul>
+                `;
+                mainBtn.textContent = 'Probar en el Simulador';
+                mainBtn.onclick = function() {
+                    closeFeatureModal();
+                    navigateTo('tecnico');
+                };
+            } else if (type === 'simulacion') {
+                iconContainer.className = "w-10 h-10 rounded-xl flex items-center justify-center text-lg bg-cyan-500/20 text-cyan-400";
+                iconContainer.innerHTML = '<i class="fa-solid fa-terminal"></i>';
+                titleElem.textContent = 'Simulación de Pseudocódigo en Vivo';
+                bodyElem.innerHTML = `
+                    <p>La <strong>Simulación en Vivo</strong> de PSeInt te permite comprobar el funcionamiento de tus algoritmos de manera inmediata sin instalar software.</p>
+                `;
+                mainBtn.textContent = 'Abrir Simulador Ahora';
+                mainBtn.onclick = function() {
+                    closeFeatureModal();
+                    navigateTo('tecnico');
+                };
+            } else if (type === 'ruta') {
+                iconContainer.className = "w-10 h-10 rounded-xl flex items-center justify-center text-lg bg-emerald-500/20 text-emerald-400";
+                iconContainer.innerHTML = '<i class="fa-solid fa-graduation-cap"></i>';
+                titleElem.textContent = 'Ruta de Aprendizaje Estructurada';
+                bodyElem.innerHTML = `
+                    <p>Nuestra <strong>Ruta de Aprendizaje</strong> está organizada paso a paso para llevarte de cero a dominar la programación estructurada.</p>
+                `;
+                mainBtn.textContent = 'Ver Cursos Disponibles';
+                mainBtn.onclick = function() {
+                    closeFeatureModal();
+                    navigateTo('servicios');
+                };
+            } else if (type === 'entorno_seguro') {
+                iconContainer.className = "w-10 h-10 rounded-xl flex items-center justify-center text-lg bg-indigo-500/20 text-indigo-400";
+                iconContainer.innerHTML = '<i class="fa-solid fa-shield-halved"></i>';
+                titleElem.textContent = 'Entorno Seguro y Protegido';
+                bodyElem.innerHTML = `<p>En Nobile Tech, la seguridad de los datos de nuestros estudiantes es la prioridad principal.</p>`;
+                mainBtn.textContent = 'Crear Cuenta Segura';
+                mainBtn.onclick = function() {
+                    closeFeatureModal();
+                    navigateTo('registro');
+                };
+            } else if (type === 'acceso_247') {
+                iconContainer.className = "w-10 h-10 rounded-xl flex items-center justify-center text-lg bg-cyan-500/20 text-cyan-400";
+                iconContainer.innerHTML = '<i class="fa-solid fa-clock"></i>';
+                titleElem.textContent = 'Disponibilidad Absoluta 24/7';
+                bodyElem.innerHTML = `<p>Aprende sin límites de horarios ni restricciones geográficas desde cualquier plataforma.</p>`;
+                mainBtn.textContent = 'Ir al Tema Técnico';
+                mainBtn.onclick = function() {
+                    closeFeatureModal();
+                    navigateTo('tecnico');
+                };
+            } else if (type === 'simulador_pseint') {
+                iconContainer.className = "w-10 h-10 rounded-xl flex items-center justify-center text-lg bg-emerald-500/20 text-emerald-400";
+                iconContainer.innerHTML = '<i class="fa-solid fa-chalkboard-user"></i>';
+                titleElem.textContent = 'Intérprete Integrado de PSeInt';
+                bodyElem.innerHTML = `<p>Olvídate de instalar software adicional o lidiar con configuraciones complejas.</p>`;
+                mainBtn.textContent = 'Probar Simulador Ahora';
+                mainBtn.onclick = function() {
+                    closeFeatureModal();
+                    navigateTo('tecnico');
+                };
+            } else if (type === 'certificacion') {
+                iconContainer.className = "w-10 h-10 rounded-xl flex items-center justify-center text-lg bg-amber-500/20 text-amber-400";
+                iconContainer.innerHTML = '<i class="fa-solid fa-certificate"></i>';
+                titleElem.textContent = 'Acreditación y Certificado de Aprobación';
+                bodyElem.innerHTML = `<p>Valida tus conocimientos adquiridos y fortalece tu perfil académico o profesional.</p>`;
+                mainBtn.textContent = 'Ver Planes y Ofertas';
+                mainBtn.onclick = function() {
+                    closeFeatureModal();
+                    navigateTo('servicios');
+                };
+            }
+
+            document.getElementById('featureModal').classList.remove('hidden');
+        }
+
+        function closeFeatureModal() {
+            document.getElementById('featureModal').classList.add('hidden');
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function switchTab(tabId) {
+            document.getElementById('auth-tab').classList.add('hidden');
+            document.getElementById('checkout-tab').classList.add('hidden');
+            document.getElementById(tabId).classList.remove('hidden');
+
+            const btnAuth = document.getElementById('btn-auth-tab');
+            const btnCheck = document.getElementById('btn-checkout-tab');
+
+            if (tabId === 'auth-tab') {
+                btnAuth.className = "py-3 px-6 text-sm font-bold border-b-2 border-indigo-500 text-indigo-400";
+                btnCheck.className = "py-3 px-6 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200";
+            } else {
+                btnCheck.className = "py-3 px-6 text-sm font-bold border-b-2 border-indigo-500 text-indigo-400";
+                btnAuth.className = "py-3 px-6 text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200";
+            }
+        }
+
+        function loadTemplate() {
+            const val = document.getElementById('codeTemplate').value;
+            if (templates[val]) {
+                document.getElementById('pseintCode').value = templates[val];
+            }
+        }
+
+        function runPSeIntSimulator() {
+            const code = document.getElementById('pseintCode').value;
+            const output = document.getElementById('pseintOutput');
+            output.textContent = "> Ejecutando algoritmo...\n\n";
+
+            const lines = code.split('\n');
+            let outputText = "";
+            let variables = {};
+
+            try {
+                for (let i = 0; i < lines.length; i++) {
+                    let line = lines[i].trim();
+
+                    if (line.startsWith("Definir")) {
+                        let parts = line.replace("Definir", "").replace(";", "").split("Como");
+                        if (parts.length === 2) {
+                            let vars = parts[0].split(",");
+                            vars.forEach(v => {
+                                variables[v.trim()] = 0;
+                            });
+                        }
+                    } else if (line.includes("<-")) {
+                        let parts = line.replace(";", "").split("<-");
+                        let varName = parts[0].trim();
+                        let expr = parts[1].trim();
+
+                        Object.keys(variables).forEach(v => {
+                            let regex = new RegExp("\\b" + v + "\\b", "g");
+                            expr = expr.replace(regex, variables[v]);
+                        });
+
+                        try {
+                            variables[varName] = eval(expr);
+                        } catch (e) {
+                            variables[varName] = 0;
+                        }
+                    } else if (line.startsWith("Escribir")) {
+                        let textToPrint = line.replace("Escribir", "").replace(";", "").trim();
+                        let matches = textToPrint.match(/(".*?"|[^",\s]+)/g);
+                        
+                        if (matches) {
+                            let lineOut = "";
+                            matches.forEach(m => {
+                                m = m.trim();
+                                if (m.startsWith('"') && m.endsWith('"')) {
+                                    lineOut += m.substring(1, m.length - 1);
+                                } else if (m !== ",") {
+                                    if (variables.hasOwnProperty(m)) {
+                                        lineOut += variables[m];
+                                    } else {
+                                        lineOut += m;
+                                    }
+                                }
+                            });
+                            outputText += lineOut + "\n";
+                        }
+                    }
+                }
+
+                if (outputText === "") {
+                    outputText = "Algoritmo ejecutado con éxito. Sin salidas de texto escritas.\n";
+                }
+
+                output.textContent += outputText + "\n*** Ejecución Finalizada Con Éxito ***";
+            } catch (err) {
+                output.textContent += "Error de ejecución: " + err.message;
+            }
+        }
+
+        function clearConsole() {
+            document.getElementById('pseintOutput').textContent = '> Consola limpia. Listo para nueva ejecución...';
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const alertBox = document.getElementById('authAlert');
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const user = document.getElementById('regUser').value;
+
+            alertBox.classList.remove('hidden', 'bg-red-500/20', 'text-red-300');
+            alertBox.classList.add('bg-emerald-500/20', 'text-emerald-300', 'border', 'border-emerald-500/30');
+            alertBox.textContent = `¡Registro exitoso para ${name}! Enviando datos...`;
+
+            if (SCRIPT_URL && SCRIPT_URL !== '') {
+                fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: 'registro',
+                        nombre: name,
+                        email: email,
+                        usuario: user,
+                        fecha: new Date().toISOString()
+                    })
+                }).catch(err => console.log('Google Script Sync:', err));
+            }
+
+            setTimeout(() => {
+                switchTab('checkout-tab');
+                document.getElementById('cardHolder').value = name;
+            }, 1500);
+        }
+
+        function processPayment(e) {
+            e.preventDefault();
+            const btn = document.getElementById('paySubmitBtn');
+            const ticketContainer = document.getElementById('ticketContainer');
+            const holder = document.getElementById('cardHolder').value;
+            const item = document.getElementById('checkoutCourseName').textContent;
+            const price = document.getElementById('checkoutPrice').textContent;
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Procesando Pago Pay...';
+
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-shield-halved"></i> <span>Verificar y Pagar Ahora</span>';
+
+                const txId = '#TX-' + Math.floor(100000 + Math.random() * 900000);
+                const now = new Date().toLocaleString();
+
+                document.getElementById('ticketId').textContent = txId;
+                document.getElementById('ticketClient').textContent = holder;
+                document.getElementById('ticketItem').textContent = item;
+                document.getElementById('ticketAmount').textContent = price;
+                document.getElementById('ticketDate').textContent = 'Fecha: ' + now;
+
+                ticketContainer.classList.remove('hidden');
+                ticketContainer.scrollIntoView({ behavior: 'smooth' });
+
+                if (SCRIPT_URL && SCRIPT_URL !== '') {
+                    fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            type: 'pago',
+                            transaccion: txId,
+                            cliente: holder,
+                            servicio: item,
+                            monto: price,
+                            fecha: now
+                        })
+                    }).catch(err => console.log('Google Script Sync:', err));
+                }
+            }, 2000);
+        }
+
+        function toggleContrast() {
+            document.body.classList.toggle('high-contrast');
+        }
+
+        function toggleLanguage() {
+            currentLang = (currentLang === 'es') ? 'en' : 'es';
+            document.getElementById('langBtn').textContent = (currentLang === 'es') ? 'EN' : 'ES';
+
+            const langData = i18n[currentLang];
+            document.querySelectorAll('[data-key]').forEach(elem => {
+                const key = elem.getAttribute('data-key');
+                if (langData[key]) {
+                    elem.textContent = langData[key];
+                }
+            });
+        }
+
+        function toggleAudioReader() {
+            if (isSpeaking) {
+                stopAudioReader();
+            } else {
+                startAudioReader();
+            }
+        }
+
+        function startAudioReader() {
+            if (!('speechSynthesis' in window)) {
+                alert('Tu navegador no soporta lectura por voz.');
+                return;
+            }
+
+            const visibleSection = document.querySelector('.page-section:not(.hidden)');
+            if (!visibleSection) return;
+
+            const textToRead = visibleSection.innerText;
+            const utterance = new SpeechSynthesisUtterance(textToRead);
+            utterance.lang = (currentLang === 'es') ? 'es-ES' : 'en-US';
+
+            if (availableVoices.length > 0) {
+                const matchingVoice = availableVoices.find(v => v.lang.startsWith(utterance.lang));
+                if (matchingVoice) utterance.voice = matchingVoice;
+            }
+
+            utterance.onend = () => stopAudioReader();
+            utterance.onerror = () => stopAudioReader();
+
+            window.speechSynthesis.speak(utterance);
+            isSpeaking = true;
+
+            const icon = document.getElementById('audioIcon');
+            if (icon) icon.classList.add('audio-speaking');
+        }
+
+        function stopAudioReader() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+            isSpeaking = false;
+            const icon = document.getElementById('audioIcon');
+            if (icon) icon.classList.remove('audio-speaking');
+        }
+
+        function openModal(title, body) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalBody').textContent = body;
+            document.getElementById('legalModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('legalModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
